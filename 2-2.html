@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>2-2</title>
+</head>
+<body>
+	<!--使用ajax從後台抓出資料-->
+	<form>
+	<!--此為範例 請自行修改-->
+		<select id="sel">
+　			<option value="Taipei">台北市</option>
+			<option value="Tainan">台南市</option>
+　			<option value="Kaohsiung">高雄市</option>
+		</select>
+		<select id="sel2">
+			
+		</select>
+	</form>
+	<!--3-3題-->縣市+區域<input type="text" id="address"></br>
+	<!--加分題(需chrome可用)--><input type="button" value="下載">
+
+</body>
+<?php
+require('config.php');
+mysql_query("set names utf8");
+$mysqldbname="資料庫名";
+mysql_select_db($mysqldbname);
+
+$shops = mysql_query("select * from area;");
+if(!$shops){
+   	echo "Execute SQL failed : ". mysql_error();
+	exit;
+}
+$shopCodeArr=array();     //用來存哪些選項的陣列
+$shopCount=0;
+while($rows=mysql_fetch_array($shops))
+{
+	$shopCodeArr[$shopCount]=$rows[shopCode];
+	$shopCount++;
+}
+for($i=0;$i<count($shopCodeArr);$i++)
+{
+	echo "<script type=\"text/javascript\">";
+	echo "document.getElementById(\"shopList\").options[$i]=new Option(\"$shopCodeArr[$i]\",\"$shopCodeArr[$i]\")";
+	echo "</script>";
+}
+?>
+</html>
+
+
